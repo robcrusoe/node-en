@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "tsc app.ts && tsc routes.ts && node app.js",
+    "server": "tsc serverRoutes.ts && tsc server.ts && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
