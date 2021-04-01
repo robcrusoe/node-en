@@ -7,6 +7,7 @@ const serverRequestHandler = (req: IncomingMessage, res: ServerResponse) => {
 
   if (url === "/" && method === "GET") {
     res.statusCode = 200;
+    res.setHeader('Content-type', 'text/html');
     res.write(
       `
             <html>
@@ -30,6 +31,7 @@ const serverRequestHandler = (req: IncomingMessage, res: ServerResponse) => {
 
   if (url === "/users" && method === "GET") {
     res.statusCode = 200;
+    res.setHeader('Content-type', 'text/html');
     res.write(
       `
               <html>
