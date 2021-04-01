@@ -29,4 +29,6 @@ var requestHandler = function (req, res) {
     res.write("\n          <html>\n              <head>\n                  <title>NodeJS | En</title>\n              </head>\n  \n              <body>\n                  <h1>Hello from NodeJS Server!</h1>\n              </body>\n          </html>\n          ");
     res.end();
 };
-module.exports = requestHandler;
+module.exports = {
+    handler: requestHandler
+};

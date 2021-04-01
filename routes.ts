@@ -63,4 +63,6 @@ const requestHandler = (req: IncomingMessage, res: ServerResponse): any => {
   res.end();
 };
 
-module.exports = requestHandler;
+module.exports = {
+  handler: requestHandler,
+};
