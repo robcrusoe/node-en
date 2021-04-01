@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "tsc app.ts && node app.js",
+    "dev": "tsc app.ts && tsc routes.ts && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
