@@ -24,10 +24,11 @@ var server = http.createServer(function (req, res) {
             var parsedBody = Buffer.concat(requestBody_1).toString();
             console.log("parsedBody: ", parsedBody);
             var message = parsedBody.split("=")[1];
-            fs.writeFileSync("message.txt", message);
-            res.statusCode = 302;
-            res.setHeader("Location", "/");
-            return res.end();
+            fs.writeFile("message.txt", message, function (error) {
+                res.statusCode = 302;
+                res.setHeader("Location", "/");
+                return res.end();
+            });
         });
     }
     res.setHeader("Content-Type", "text/html");
