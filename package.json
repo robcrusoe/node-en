@@ -1,0 +1,17 @@
+{
+  "name": "node-en",
+  "version": "1.0.0",
+  "description": "A NodeJS Project for playing around",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NodeJS",
+    "Firebolt"
+  ],
+  "author": "robcrusoe",
+  "license": "ISC"
+}
