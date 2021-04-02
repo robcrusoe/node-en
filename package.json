@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "tsc app.ts && tsc routes.ts && node app.js",
+    "dev": "tsc app.ts && tsc routes.ts && nodemon app.js",
     "server": "tsc serverRoutes.ts && tsc server.ts && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +16,7 @@
   "author": "robcrusoe",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^14.14.37"
+    "@types/node": "^14.14.37",
+    "nodemon": "^2.0.7"
   }
 }
