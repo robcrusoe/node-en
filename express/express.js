@@ -5,6 +5,7 @@ const path = require("path");
 const express = require("express");
 const favicon = require("serve-favicon");
 const bodyParser = require("body-parser");
+const nodeTo = require("@robcrusoe/node-to");
 
 /* App Imports */
 const adminRoutes = require("./routes/admin");
@@ -22,6 +23,7 @@ app.use(shopRoutes);
 
 app.use((req, res, next) => {
   res.status(404).send('<h1>Page not found ...</h1>');
+  nodeTo.printMessage();
 });
 
 app.listen(3000);
