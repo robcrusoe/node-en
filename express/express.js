@@ -11,15 +11,12 @@ const app = express();
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.use((req, res, next) => {
-    console.log('In the express middleware!');
-    next(); // Allows the request to continue to the next middleware in line
+app.use('/add-product', (req, res, next) => {
+    res.status(200).send('<h1>Add Products</h1>');
 });
 
-app.use((req, res, next) => {
-    console.log('In the second express middleware!');
-    res.status(200).send('<h1>Hello from Express!</h1>');
+app.use('/', (req, res, next) => {
+    res.status(200).send('<h1>Welcome!</h1>');
 });
 
-const server = http.createServer(app);
-server.listen(3000);
+app.listen(3000);
