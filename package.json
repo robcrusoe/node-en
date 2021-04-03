@@ -7,6 +7,7 @@
     "start": "node index.js",
     "dev": "tsc app.ts && tsc routes.ts && nodemon app.js",
     "server": "tsc serverRoutes.ts && tsc server.ts && node server.js",
+    "express": "nodemon ./express/express.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -17,6 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^14.14.37",
+    "express": "^4.17.1",
     "nodemon": "^2.0.7"
   }
 }
