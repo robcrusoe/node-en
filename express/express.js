@@ -13,6 +13,9 @@ const shopRoutes = require("./routes/shop");
 
 const app = express();
 
+/* Setting up global configuration values ... */
+app.set("view engine", "pug");
+
 /* Resgistering a (req) body parser ... */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
