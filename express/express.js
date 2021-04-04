@@ -27,7 +27,7 @@ app.use('/admin', adminRoutes.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-  res.status(404).render("404");
+  res.status(404).render("404", { docTitle: 'PNF', path: null });
   nodeTo.printMessage();
 });
 
