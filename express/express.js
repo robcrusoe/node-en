@@ -15,7 +15,7 @@ const app = express();
 
 /* Setting up global configuration values ... */
 app.set("view engine", "pug");
-app.set("views", "views");
+app.set("views", path.join(__dirname, 'views'));
 
 /* Resgistering a (req) body parser ... */
 app.use(bodyParser.urlencoded({ extended: false }));

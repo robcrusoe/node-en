@@ -8,7 +8,10 @@ const router = express.Router();
 
 router.get("/", (req, res, next) => {
   console.log('adminData.products [shop.js]: ', adminData.products);
-  res.status(200).sendFile(path.join(__dirname, "../", "views", "shop.html"));
+  const products = [...adminData.products];
+  
+  /* The following uses the default templating engine to return the correct template ... */
+  res.render('./shop', { prods: products, docTitle: 'Shop | Node EN' });
 });
 
 module.exports = router;
