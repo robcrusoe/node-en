@@ -1,54 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
+<main>
+    {{#if hasProducts}}
+    <h1 class="product__title">Available Products</h1>
+    <div class="grid">
+        {{#each prods}}
+        <article class="card product-item">
+            <header class="card__header">
+                <h1 class="product__title">{{this.title}}</h1>
+            </header>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{docTitle}}</title>
-
-    <link rel="stylesheet" href="/css/main.css">
-</head>
-
-<body>
-    <header class="main-header">
-        <nav class="main-header__nav">
-            <ul class="main-header__item-list">
-                <li class="main-header__item"><a href="/" class="active">Shop</a></li>
-                <li class="main-header__item"><a href="/admin/add-product">Add Product</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        {{#if hasProducts}}
-            <h1 class="product__title">Available Products</h1>
-            <div class="grid">
-                {{#each prods}}
-                    <article class="card product-item">
-                        <header class="card__header">
-                            <h1 class="product__title">{{this.title}}</h1>
-                        </header>
-
-                        <div class="card__image">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Shop.svg" alt="A Shop Item">
-                        </div>
-
-                        <div class="card__content">
-                            <h2 class="product__price">$19.99</h2>
-                            <p class="product__description">A very interesting book about so many events</p>
-                        </div>
-
-                        <div class="card__actions">
-                            <button class="btn">Add to Cart</button>
-                        </div>
-                    </article>
-                {{/each}}
+            <div class="card__image">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Shop.svg" alt="A Shop Item">
             </div>
-        {{else}}
-            <h1 class="product__title">No products available!</h1>
-        {{/if}}
-    </main>
-</body>
 
-</html>
+            <div class="card__content">
+                <h2 class="product__price">$19.99</h2>
+                <p class="product__description">A very interesting book about so many events</p>
+            </div>
+
+            <div class="card__actions">
+                <button class="btn">Add to Cart</button>
+            </div>
+        </article>
+        {{/each}}
+    </div>
+    {{else}}
+    <h1 class="product__title">No products available!</h1>
+    {{/if}}
+</main>

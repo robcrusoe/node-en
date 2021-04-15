@@ -17,7 +17,7 @@ const shopRoutes = require("./routes/shop");
 const app = express();
 
 /* Register a new templating engine */
-app.engine('handlebars', expressHbs());
+app.engine('handlebars', expressHbs({layoutsDir: 'express/views/layout/', defaultLayout: 'main-layout', extname: 'handlebars'}));
 
 /* Setting up global configuration values ... */
 app.set("view engine", "handlebars");
