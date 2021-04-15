@@ -13,17 +13,21 @@ const shopRoutes = require("./routes/shop");
 
 const app = express();
 
+/* Setting up global configuration values ... */
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, 'views'));
+
 /* Resgistering a (req) body parser ... */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
-app.use('/admin', adminRoutes);
+app.use('/admin', adminRoutes.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
+  res.status(404).render("404", { docTitle: 'Page Not Found!', path: null });
   nodeTo.printMessage();
 });
 
