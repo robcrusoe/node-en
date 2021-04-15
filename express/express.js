@@ -33,7 +33,7 @@ app.use('/admin', adminRoutes.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
-  res.status(404).render("404", { docTitle: 'PNF', path: null });
+  res.status(404).render("404", { docTitle: 'Page Not Found!', path: null });
   nodeTo.printMessage();
 });
 
