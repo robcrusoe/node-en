@@ -7,14 +7,20 @@ const favicon = require("serve-favicon");
 const bodyParser = require("body-parser");
 const nodeTo = require("@robcrusoe/node-to");
 
+/* Imports for express-handlebars */
+const expressHbs = require('express-handlebars');
+
 /* App Imports */
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
 const app = express();
 
+/* Register a new templating engine */
+app.engine('handlebars', expressHbs());
+
 /* Setting up global configuration values ... */
-app.set("view engine", "pug");
+app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, 'views'));
 
 /* Resgistering a (req) body parser ... */
