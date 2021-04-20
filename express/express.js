@@ -11,6 +11,9 @@ const nodeTo = require("@robcrusoe/node-to");
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 
+/* Controller Imports */
+const errorController = require('./controllers/error');
+
 const app = express();
 
 /* Setting up global configuration values ... */
@@ -26,9 +29,6 @@ app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-  res.status(404).render("404", { docTitle: 'Page Not Found!', path: null });
-  nodeTo.printMessage();
-});
+app.use(errorController.get404);
 
 app.listen(3000);
