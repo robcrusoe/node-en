@@ -5,7 +5,6 @@ const path = require("path");
 const express = require("express");
 const favicon = require("serve-favicon");
 const bodyParser = require("body-parser");
-const nodeTo = require("@robcrusoe/node-to");
 
 /* App Imports */
 const adminRoutes = require("./routes/admin");
