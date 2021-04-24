@@ -112,3 +112,12 @@ main {
   background-color: #00695c;
   color: white;
 }
+
+.btn_reinforced {
+  width: 5rem;
+  height: 2.5rem;
+  text-decoration: none;
+  color: green;
+  margin: 1.25rem 0;
+  cursor: pointer;
+}

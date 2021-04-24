@@ -23,7 +23,9 @@
               </div>
 
               <div class="card__actions">
-                <button class="btn">Add to Cart</button>
+                <form action="/add-to-cart/:id" method="POST">
+                  <button class="btn">Add to Cart</button>
+                </form>
               </div>
             </article>
           <% } %>
