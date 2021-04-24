@@ -35,6 +35,14 @@ exports.getCart = (req, res, next) => {
   res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN' });
 };
 
+exports.postCart = (req, res, next) => {
+  const productId = req.body.productId;
+
+  Product.findById(productId, (product) => {
+    res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN' });
+  });
+};
+
 exports.getCheckout = (req, res, next) => {
   res.render('./shop/checkout', { path: '/checkout', docTitle: 'Checkout | Node EN' });
 };
