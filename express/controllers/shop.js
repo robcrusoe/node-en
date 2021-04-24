@@ -17,7 +17,7 @@ exports.getProduct = (req, res, next) => {
   Product.findById(prodId, (product) => {
     console.log("product [shopController]: ", product);
 
-    res.render('./shop/product-detail', { path: '/', docTitle: product.title + ' | Node EN', product: product });
+    res.render('./shop/product-detail', { path: '/products', docTitle: product.title + ' | Node EN', product: product });
   });
 };
 
