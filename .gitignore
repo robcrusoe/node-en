@@ -6,3 +6,6 @@ node_modules
 
 # Other Files
 *.txt
+
+# Database configs
+express/utils/database.js
