@@ -23,6 +23,8 @@ module.exports = class Product {
 
   /* Adds the current product to the products array ... */
   save() {
+    this.id = Math.random().toString();
+
     /* Save all products to a file */
     getProductsFromFile((products) => {
       products.push(this);
