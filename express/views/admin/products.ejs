@@ -25,6 +25,7 @@
               <div class="card__actions">
                 <a href="/admin/edit-product/<%= product.id %>?editMode=true" class="btn_reinforced">Edit</a>
                 <form action="/admin/delete-product" method="POST">
+                  <input type="hidden" value="<%= product.id %>" name="productId">
                   <button type="submit" class="btn_reinforced">Delete</button>
                 </form>
               </div>
