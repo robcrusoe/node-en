@@ -16,9 +16,9 @@ exports.getProduct = (req, res, next) => {
 
   Product.findById(prodId, (product) => {
     console.log("product [shopController]: ", product);
-  });
 
-  res.render('./shop/product-detail', { path: '/', docTitle: 'Product Detail | Node EN' });
+    res.render('./shop/product-detail', { path: '/', docTitle: 'Product Detail | Node EN', product: product });
+  });
 };
 
 exports.getIndex = (req, res, next) => {

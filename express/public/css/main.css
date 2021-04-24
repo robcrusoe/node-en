@@ -121,3 +121,7 @@ main {
   margin: 1.25rem 0;
   cursor: pointer;
 }
+
+.centered {
+  text-align: center;
+}
