@@ -13,6 +13,9 @@ const shopRoutes = require("./routes/shop");
 /* Controller Imports */
 const errorController = require('./controllers/error');
 
+/* Database Imports */
+const db = require('./utils/database');
+
 const app = express();
 
 /* Setting up global configuration values ... */
