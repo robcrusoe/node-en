@@ -4,7 +4,7 @@ const path = require('path');
 const p = path.join(__dirname, '../', 'data', 'cart.json');
 
 module.exports = class Cart {
-  static addProduct(id, productPrice) {
+  static addProduct(id, productPrice, cb) {
     let cart = { products: [], totalPrice: 0 };
 
     // Fetch the previous cart
@@ -36,6 +36,8 @@ module.exports = class Cart {
         fs.writeFile(p, JSON.stringify(cart), (err) => {
           if (err) {
             console.log('Error while saving to cart: ', err);
+          } else {
+            cb(updatedCart);
           }
         });
       }
@@ -53,14 +55,28 @@ module.exports = class Cart {
       const updatedCart = { ...cart };
 
       const product = updatedCart.products.find((prod) => prod.id === id);
-      const productQty = product.qty;
 
-      updatedCart.totalPrice -= +(productPrice * productQty);
-      updatedCart.products = updatedCart.products.filter((prod) => prod.id !== id);
+      if (product) {
+        const productQty = product.qty;
 
-      fs.writeFile(p, JSON.stringify(updatedCart), (err) => {
-        console.log('Error while updating cart: ', err);
-      });
+        updatedCart.totalPrice -= +(productPrice * productQty);
+        updatedCart.products = updatedCart.products.filter((prod) => prod.id !== id);
+
+        fs.writeFile(p, JSON.stringify(updatedCart), (err) => {
+          console.log('Error while updating cart: ', err);
+        });
+      }
+    });
+  }
+
+  static getCart(cb) {
+    fs.readFile(p, (err, fileContent) => {
+      if (err) {
+        cb(null);
+      } else {
+        const cart = JSON.parse(fileContent);
+        cb(cart);
+      }
     });
   }
 };
