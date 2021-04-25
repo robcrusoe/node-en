@@ -19,11 +19,13 @@ exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
   console.log('prodId [shopController]: ', prodId);
 
-  Product.findById(prodId, (product) => {
-    console.log('product [shopController]: ', product);
-
-    res.render('./shop/product-detail', { path: '/products', docTitle: product.title + ' | Node EN', product: product });
-  });
+  Product.findById(prodId)
+    .then(([product]) => {
+      res.render('./shop/product-detail', { path: '/products', docTitle: product.title + ' | Node EN', product: product[0] });
+    })
+    .catch((error) => {
+      console.log('Error while fetching a single product from DB: ', error);
+    });
 };
 
 exports.getIndex = (req, res, next) => {
@@ -42,20 +44,22 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   Cart.getCart((cart) => {
-    Product.fetchAll().then(([products, fieldData]) => {
-      const cartProducts = [];
-      for (product of products) {
-        const cartProductData = cart.products.find((prod) => prod.id === product.id);
+    Product.fetchAll()
+      .then(([products, fieldData]) => {
+        const cartProducts = [];
+        for (product of products) {
+          const cartProductData = cart.products.find((prod) => prod.id === product.id);
 
-        if (cartProductData) {
-          cartProducts.push({ productData: product, qty: cartProductData.qty });
+          if (cartProductData) {
+            cartProducts.push({ productData: product, qty: cartProductData.qty });
+          }
         }
-      }
 
-      res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: cartProducts });
-    }).catch((error) => {
-      console.log('Error reading products from DB: ', error);
-    });
+        res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: cartProducts });
+      })
+      .catch((error) => {
+        console.log('Error reading products from DB: ', error);
+      });
   });
 };
 
