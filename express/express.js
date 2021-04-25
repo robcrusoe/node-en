@@ -33,4 +33,10 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+db.execute('SELECT * FROM products').then((results) => {
+    console.log('products read from DB: ', results[0]);
+}).catch((err) => {
+    console.log('Database error: ', err);
+});
+
 app.listen(3210);
