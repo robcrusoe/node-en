@@ -2,13 +2,17 @@ const Product = require('./../models/product');
 const Cart = require('./../models/cart');
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render('./shop/product-list', {
-      prods: products,
-      docTitle: 'Products | Node EN',
-      path: '/products',
+  Product.fetchAll()
+    .then(([products, fieldData]) => {
+      res.render('./shop/product-list', {
+        prods: products,
+        docTitle: 'Products | Node EN',
+        path: '/products',
+      });
+    })
+    .catch((error) => {
+      console.log('Error reading products from DB: ', error);
     });
-  });
 };
 
 exports.getProduct = (req, res, next) => {
@@ -23,18 +27,22 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render('./shop/index', {
-      prods: products,
-      docTitle: 'Shop | Node EN',
-      path: '/',
+  Product.fetchAll()
+    .then(([products, fieldData]) => {
+      res.render('./shop/index', {
+        prods: products,
+        docTitle: 'Shop | Node EN',
+        path: '/',
+      });
+    })
+    .catch((error) => {
+      console.log('Error reading products from DB: ', error);
     });
-  });
 };
 
 exports.getCart = (req, res, next) => {
   Cart.getCart((cart) => {
-    Product.fetchAll((products) => {
+    Product.fetchAll().then(([products, fieldData]) => {
       const cartProducts = [];
       for (product of products) {
         const cartProductData = cart.products.find((prod) => prod.id === product.id);
@@ -45,6 +53,8 @@ exports.getCart = (req, res, next) => {
       }
 
       res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: cartProducts });
+    }).catch((error) => {
+      console.log('Error reading products from DB: ', error);
     });
   });
 };
