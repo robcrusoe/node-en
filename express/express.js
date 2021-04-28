@@ -49,7 +49,7 @@ app.use(errorController.get404);
 
 /* Establish relations/associations between models */
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
-// User.hasMany(Product);
+User.hasMany(Product);
 
 // sequelize.sync({ force: true }).then((result) => {
 sequelize
