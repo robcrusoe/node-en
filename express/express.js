@@ -53,7 +53,7 @@ Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 
 // sequelize.sync({ force: true }).then((result) => {
 sequelize
-  .sync({ force: true })
+  .sync()
   .then((result) => {
     return User.findByPk(1);
   })
