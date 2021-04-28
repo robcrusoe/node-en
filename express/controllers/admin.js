@@ -49,11 +49,16 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
-  const product = new Product(null, title, imageUrl, description, price);
-  product.save().then(() => {
-    res.redirect('/');
+  
+  Product.create({
+    title: title,
+    price: price,
+    imageUrl: imageUrl,
+    description: description
+  }).then((result) => {
+    console.log('New Product has been created!');
   }).catch((error) => {
-    console.log('Error while saving to DB: ', error);
+    console.log('Error while saving a Product to the DB: ', error);
   });
 };
 
