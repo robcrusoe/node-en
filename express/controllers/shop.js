@@ -47,8 +47,8 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   Cart.getCart((cart) => {
-    Product.fetchAll()
-      .then(([products, fieldData]) => {
+    Product.findAll()
+      .then((products) => {
         const cartProducts = [];
         for (product of products) {
           const cartProductData = cart.products.find((prod) => prod.id === product.id);
@@ -61,7 +61,7 @@ exports.getCart = (req, res, next) => {
         res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: cartProducts });
       })
       .catch((error) => {
-        console.log('Error reading products from DB: ', error);
+        console.log('Error reading Products from DB: ', error);
       });
   });
 };
