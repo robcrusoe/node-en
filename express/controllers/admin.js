@@ -16,7 +16,7 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/');
   }
 
-  Product.findById(productId, (product) => {
+  Product.findByPk(productId).then(product => {
     if (!product) {
       res.redirect('/');
     } else {
@@ -27,6 +27,8 @@ exports.getEditProduct = (req, res, next) => {
         product: product,
       });
     }
+  }).catch((error) => {
+    console.log('Error while fetching Product from DB: ', error);
   });
 };
 
@@ -38,10 +40,18 @@ exports.postEditProduct = (req, res, next) => {
   const updatedDesc = req.body.description;
   const updatedPrice = req.body.price;
 
-  const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedDesc, updatedPrice);
-  updatedProduct.save();
-
-  res.redirect('/admin/products');
+  Product.findByPk(prodId).then(product => {
+    product.title = updatedTitle;
+    product.price = updatedPrice;
+    product.imageUrl = updatedImageUrl;
+    product.description = updatedDesc;
+    return product.save();
+  }).then(result => {
+    console.log('Product has been updated successfully!');
+    res.redirect('/admin/products');
+  }).catch((error) => {
+    console.log('Error fetching Product from DB: ', error);
+  });
 };
 
 exports.postAddProduct = (req, res, next) => {
@@ -63,12 +73,14 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
+  Product.findAll().then((products) => {
     res.render('./admin/products', {
       prods: products,
       docTitle: 'Admin Products | Node EN',
       path: '/admin/products',
     });
+  }).catch((error) => {
+    console.log('Error fetching Products from DB: ', error);
   });
 };
 
