@@ -2,8 +2,8 @@ const Product = require('./../models/product');
 const Cart = require('./../models/cart');
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([products, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render('./shop/product-list', {
         prods: products,
         docTitle: 'Products | Node EN',
@@ -11,17 +11,20 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch((error) => {
-      console.log('Error reading products from DB: ', error);
+      console.log('Error while fetching Products from DB: ', error);
     });
 };
 
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
-  console.log('prodId [shopController]: ', prodId);
 
-  Product.findById(prodId)
-    .then(([product]) => {
-      res.render('./shop/product-detail', { path: '/products', docTitle: product.title + ' | Node EN', product: product[0] });
+  Product.findByPk(prodId)
+    .then((product) => {
+      res.render('./shop/product-detail', {
+        path: '/products',
+        docTitle: product.title + ' | Node EN',
+        product: product,
+      });
     })
     .catch((error) => {
       console.log('Error while fetching a single product from DB: ', error);
@@ -29,8 +32,8 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([products, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render('./shop/index', {
         prods: products,
         docTitle: 'Shop | Node EN',
@@ -38,7 +41,7 @@ exports.getIndex = (req, res, next) => {
       });
     })
     .catch((error) => {
-      console.log('Error reading products from DB: ', error);
+      console.log('Error fetching Products from DB: ', error);
     });
 };
 
