@@ -14,7 +14,7 @@ const shopRoutes = require("./routes/shop");
 const errorController = require('./controllers/error');
 
 /* Database Imports */
-const db = require('./utils/database');
+const sequelize = require('./utils/database');
 
 const app = express();
 
@@ -33,4 +33,8 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-app.listen(3210);
+sequelize.sync().then((result) => {
+    app.listen(3210);
+}).catch((error) => {
+    console.log('Error while syncing JS Definitions to DB: ', error);
+});
