@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 /* App Imports */
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 
 /* Controller Imports */
 const errorController = require('./controllers/error');
@@ -28,13 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-/* Mock user authentication */
-app.use((req, res, next) => {
-  next();
-});
-
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
 app.use(errorController.get404);
 

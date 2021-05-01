@@ -10,8 +10,12 @@ class Product {
 
   save() {
     const db = getDB();
-
     return db.collection('products').insertOne(this);
+  }
+
+  static fetchAll() {
+    const db = getDB();
+    return db.collection('products').find().toArray();
   }
 }
 
