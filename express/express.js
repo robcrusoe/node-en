@@ -19,6 +19,8 @@ const sequelize = require('./utils/database');
 /* Sequelize Model Imports */
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 const app = express();
 
@@ -34,12 +36,12 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 /* Mock user authentication */
 app.use((req, res, next) => {
-    User.findByPk(1).then(user => {
-        req.user = user;
-        next();
-    }).catch((error) => {
-        console.log('Error in user authentication: ', error);
-    });
+  User.findByPk(1).then(user => {
+    req.user = user;
+    next();
+  }).catch((error) => {
+    console.log('Error in user authentication: ', error);
+  });
 });
 
 app.use('/admin', adminRoutes);
@@ -51,6 +53,13 @@ app.use(errorController.get404);
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
 
+User.hasOne(Cart);
+Cart.belongsTo(User);
+
+Cart.belongsToMany(Product, { through: CartItem });
+Product.belongsToMany(Cart, { through: CartItem });
+
+
 // sequelize.sync({ force: true }).then((result) => {
 sequelize
   .sync()
@@ -58,14 +67,19 @@ sequelize
     return User.findByPk(1);
   })
   .then(user => {
-      if(!user) {
-        return User.create({ name: 'Arka Sain', email: 'arka.sain@aol.com' });
-      }
-      return Promise.resolve(user);
+    if (!user) {
+      return User.create({ name: 'Arka Sain', email: 'arka.sain@aol.com' });
+    }
+    return Promise.resolve(user);
   })
   .then(user => {
-      console.log('User: ', user);
-      app.listen(3210);
+    console.log('User: ', user);
+
+    /* Creates a test cart for the current user */
+    return user.createCart();
+  })
+  .then(cart => {
+    app.listen(3210);
   })
   .catch((error) => {
     console.log('Error while syncing JS Definitions to DB: ', error);

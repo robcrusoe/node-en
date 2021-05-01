@@ -46,23 +46,25 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  Cart.getCart((cart) => {
-    Product.findAll()
-      .then((products) => {
-        const cartProducts = [];
-        for (product of products) {
-          const cartProductData = cart.products.find((prod) => prod.id === product.id);
+  req.user.getCart().then((cart) => {
+    console.log('cart [shopController]: ', cart);
 
-          if (cartProductData) {
-            cartProducts.push({ productData: product, qty: cartProductData.qty });
-          }
+    return cart.getProducts().then(products => {
+      const cartProducts = [];
+      for (product of products) {
+        const cartProductData = cart.products.find((prod) => prod.id === product.id);
+
+        if (cartProductData) {
+          cartProducts.push({ productData: product, qty: cartProductData.qty });
         }
+      }
 
-        res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: cartProducts });
-      })
-      .catch((error) => {
-        console.log('Error reading Products from DB: ', error);
-      });
+      res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: cartProducts });
+    }).catch(error => {
+      console.log('Error while loading Products in Cart: ', error);
+    });
+  }).catch((error) => {
+    console.log('Error while fetching cart for current User from DB: ', error);
   });
 };
 
