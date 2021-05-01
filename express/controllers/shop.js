@@ -76,6 +76,10 @@ exports.postCart = (req, res, next) => {
       let newQuantity = 1;
       if (product) {
         // Updates the quantity
+        const oldQuantity = product.cartItem.quantity;
+        newQuantity = oldQuantity + 1;
+
+        return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
       }
 
       return Product.findByPk(productId).then((product) => {
