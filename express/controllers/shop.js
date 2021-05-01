@@ -50,16 +50,7 @@ exports.getCart = (req, res, next) => {
     console.log('cart [shopController]: ', cart);
 
     return cart.getProducts().then(products => {
-      const cartProducts = [];
-      for (product of products) {
-        const cartProductData = cart.products.find((prod) => prod.id === product.id);
-
-        if (cartProductData) {
-          cartProducts.push({ productData: product, qty: cartProductData.qty });
-        }
-      }
-
-      res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: cartProducts });
+      res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: products });
     }).catch(error => {
       console.log('Error while loading Products in Cart: ', error);
     });
@@ -70,11 +61,35 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const productId = req.body.productId;
+  let fetchedCart;
 
-  Product.findById(productId, (product) => {
-    Cart.addProduct(productId, product.price);
-    res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN' });
-  });
+  req.user.getCart().then(cart => {
+    fetchedCart = cart;
+    return cart.getProducts({ where: { id: productId } });
+  })
+    .then(products => {
+      let product;
+      if (products.length > 0) {
+        product = products[0];
+      }
+
+      let newQuantity = 1;
+      if (product) {
+        // Updates the quantity
+      }
+
+      return Product.findByPk(productId).then((product) => {
+        return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+      }).catch(error => {
+        console.log(error);
+      });
+    })
+    .then(() => {
+      res.redirect('/cart');
+    })
+    .catch(error => {
+      console.log('Error while fetching the cart from DB: ', error);
+    });
 };
 
 exports.getCheckout = (req, res, next) => {

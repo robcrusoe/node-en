@@ -76,7 +76,7 @@ sequelize
     console.log('User: ', user);
 
     /* Creates a test cart for the current user */
-    return user.createCart();
+    // return user.createCart();
   })
   .then(cart => {
     app.listen(3210);
