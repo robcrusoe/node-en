@@ -7,14 +7,14 @@ const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 
 /* App Imports */
-// const adminRoutes = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 // const shopRoutes = require('./routes/shop');
 
 /* Controller Imports */
 const errorController = require('./controllers/error');
 
 /* Database Related Imports */
-const mongoConnect = require('./utils/database');
+const mongoConnect = require('./utils/database').mongoConnect;
 
 const app = express();
 
@@ -30,15 +30,14 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 /* Mock user authentication */
 app.use((req, res, next) => {
-
+  next();
 });
 
-// app.use('/admin', adminRoutes);
+app.use('/admin', adminRoutes);
 // app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect((client) => {
+mongoConnect(() => {
   app.listen(3210);
-  // console.log('client [MongoDB]: ', client);
 });
