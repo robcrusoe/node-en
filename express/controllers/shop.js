@@ -80,13 +80,14 @@ exports.getCheckout = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user.getOrders().then(orders => {
-    console.log('orders: ', orders);
+  Order.find({ 'user.userId': req.user._id })
+    .then(orders => {
+      console.log('orders: ', orders);
 
-    res.render('./shop/orders', { path: '/orders', docTitle: 'Orders | Node EN', orders: orders });
-  }).catch(err => {
-    console.log(error);
-  });
+      res.render('./shop/orders', { path: '/orders', docTitle: 'Orders | Node EN', orders: orders });
+    }).catch(err => {
+      console.log(error);
+    });
 };
 
 exports.postCartDeleteItem = (req, res, next) => {
