@@ -15,26 +15,26 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
-  // const prodId = req.params.productId;
+  const prodId = req.params.productId;
 
-  // Product.findByPk(prodId)
-  //   .then((product) => {
-  //     res.render('./shop/product-detail', {
-  //       path: '/products',
-  //       docTitle: product.title + ' | Node EN',
-  //       product: product,
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log('Error while fetching a single product from DB: ', error);
-  //   });
+  Product.findById(prodId)
+    .then(product => {
+      res.render('./shop/product-detail', {
+        path: '/products',
+        docTitle: product.title + ' | Node EN',
+        product: product,
+      });
+    })
+    .catch((error) => {
+      console.log('Error while fetching a single Product from DB: ', error);
+    });
 };
 
 exports.getIndex = (req, res, next) => {
   Product.fetchAll()
     .then(products => {
       console.log('products [shopController]: ', products);
-      
+
       res.render('./shop/index', {
         prods: products,
         docTitle: 'Shop | Node EN',
