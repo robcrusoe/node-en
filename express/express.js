@@ -19,7 +19,9 @@ const mongoConnect = require('./utils/database').mongoConnect;
 /* Model Imports */
 const User = require('./models/user');
 
+
 const app = express();
+
 
 /* Setting up global configuration values ... */
 app.set('view engine', 'ejs');
@@ -31,21 +33,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+/* Wire up a new mock User */
+app.use((req, res, next) => {
+  console.log('**********************************************************');
+
+  User.findById('608e60c14d47900443518cc9').then(user => {
+    console.log('Current User: ', user);
+
+    req.user = user;
+    next();
+  }).catch(error => {
+    console.log('Error while fetching User from DB: ', error);
+  });
+});
+
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
-
-/* Wire up a new mock User */
-app.use((req, res, next) => {
-  User.findById('608e60c14d47900443518cc9').then(user => {
-    req.user = user;
-  }).catch(error => {
-    console.log('Error while fetching User from DB: ', error);
-  });
-
-  next();
-});
 
 mongoConnect(() => {
   app.listen(3210);
