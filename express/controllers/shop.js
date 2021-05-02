@@ -2,7 +2,7 @@ const User = require('../models/user');
 const Product = require('./../models/product');
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render('./shop/product-list', {
         prods: products,
@@ -12,6 +12,22 @@ exports.getProducts = (req, res, next) => {
     })
     .catch((error) => {
       console.log('Error while fetching Products from DB: ', error);
+    });
+};
+
+exports.getIndex = (req, res, next) => {
+  Product.find()
+    .then(products => {
+      console.log('products [shopController]: ', products);
+
+      res.render('./shop/index', {
+        prods: products,
+        docTitle: 'Shop | Node EN',
+        path: '/',
+      });
+    })
+    .catch((error) => {
+      console.log('Error fetching Products from DB: ', error);
     });
 };
 
@@ -28,22 +44,6 @@ exports.getProduct = (req, res, next) => {
     })
     .catch((error) => {
       console.log('Error while fetching a single Product from DB: ', error);
-    });
-};
-
-exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(products => {
-      console.log('products [shopController]: ', products);
-
-      res.render('./shop/index', {
-        prods: products,
-        docTitle: 'Shop | Node EN',
-        path: '/',
-      });
-    })
-    .catch((error) => {
-      console.log('Error fetching Products from DB: ', error);
     });
 };
 
