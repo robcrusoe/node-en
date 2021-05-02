@@ -29,20 +29,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
-
-app.use(errorController.get404);
-
 /* Wire up a mock User */
 app.use((req, res, next) => {
   User.findById('608ecce51dfbeb33d388e4a0').then(user => {
     req.user = user;
+    // console.log('Current User: ', user);
+
     next();
   }).catch(error => {
     console.log('Error fetching User from DB: ', error);
   });
 });
+
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use(errorController.get404);
 
 mongoose.connect('mongodb+srv://robcrusoe:j8KLWdQCCKH13wJz@cluster-fb-0.vkg7v.mongodb.net/shop?retryWrites=true&w=majority').then(result => {
   // const user = new User({

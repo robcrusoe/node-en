@@ -13,13 +13,14 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
-
+  
   /* Creates a new Product (managed by Mongoose) */
   const product = new Product({
     title: title,
     price: price,
     description: description,
-    imageUrl: imageUrl
+    imageUrl: imageUrl,
+    userId: req.user
   });
 
   product.save()
