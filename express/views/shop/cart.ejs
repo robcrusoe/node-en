@@ -11,7 +11,7 @@
             <% cartProducts.forEach((cartProd)=> { %>
               <li>
                 <p>
-                  <%= cartProd.title %> (<%= cartProd.cartItem.quantity %>)
+                  <%= cartProd.title %> (<%= cartProd.quantity %>)
                 </p>
                 <form action="/cart-delete-item" method="POST">
                   <input type="hidden" value="<%= cartProd.id %>" name="prodId">

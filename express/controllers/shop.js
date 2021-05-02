@@ -48,33 +48,27 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  // req.user.getCart().then((cart) => {
-  //   console.log('cart [shopController]: ', cart);
-
-  //   return cart.getProducts().then(products => {
-  //     res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: products });
-  //   }).catch(error => {
-  //     console.log('Error while loading Products in Cart: ', error);
-  //   });
-  // }).catch((error) => {
-  //   console.log('Error while fetching cart for current User from DB: ', error);
-  // });
+  req.user.getCart().then(products => {
+    console.log('cart Product(s): ', products);
+    res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: products });
+  }).catch((error) => {
+    console.log('Error while fetching cart for current User from DB: ', error);
+  });
 };
 
 exports.postCart = (req, res, next) => {
   const productId = req.body.productId;
 
-  Product.findById(productId).then(product => {
-    return req.user.addToCart(product)
-      .then(() => {
-        res.redirect('/cart');
-      })
-      .catch(error => {
-        console.log('Error while fetching the cart from DB: ', error);
-      });
-  }).catch(error => {
-    console.log('Error while fetching a Product from the DB: ', error);
-  });
+  Product.findById(productId)
+    .then(product => {
+      return req.user.addToCart(product);
+    })
+    .then(() => {
+      res.redirect('/cart');
+    })
+    .catch(error => {
+      console.log('DB Error: ', error);
+    });
 };
 
 exports.getCheckout = (req, res, next) => {
