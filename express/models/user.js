@@ -87,21 +87,41 @@ class User {
 
   addOrder() {
     const db = getDB();
-    return db.collection('orders').insertOne(this.cart).then(result => {
-      this.cart = { items: [] };
 
-      return db.collection('users').updateOne({
-        _id: this._id
-      }, {
-        $set: {
-          cart: {
-            items: []
+    return this.getCart()
+      .then(products => {
+        const order = {
+          items: products,
+          user: {
+            _id: new ObjectId(this._id),
+            name: this.name
           }
-        }
+        };
+
+        return db.collection('orders').insertOne(order);
+      })
+      .then(result => {
+        this.cart = { items: [] };
+
+        return db.collection('users').updateOne({
+          _id: this._id
+        }, {
+          $set: {
+            cart: {
+              items: []
+            }
+          }
+        });
+      })
+      .catch(error => {
+        console.log('DB Error: ', error);
       });
-    }).catch(error => {
-      console.log('MongoDB Error: ', error);
-    })
+  }
+
+  getOrders() {
+    const db = getDB();
+
+
   }
 
   static findById(userId) {
