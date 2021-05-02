@@ -5,6 +5,7 @@ const path = require('path');
 const express = require('express');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 /* App Imports */
 const adminRoutes = require('./routes/admin');
@@ -13,15 +14,10 @@ const shopRoutes = require('./routes/shop');
 /* Controller Imports */
 const errorController = require('./controllers/error');
 
-/* Database Related Imports */
-const mongoConnect = require('./utils/database').mongoConnect;
-
 /* Model Imports */
 const User = require('./models/user');
 
-
 const app = express();
-
 
 /* Setting up global configuration values ... */
 app.set('view engine', 'ejs');
@@ -50,6 +46,8 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(() => {
+mongoose.connect('mongodb+srv://robcrusoe:j8KLWdQCCKH13wJz@cluster-fb-0.vkg7v.mongodb.net/shop?retryWrites=true&w=majority').then(result => {
   app.listen(3210);
+}).catch(error => {
+  console.log('DB Connection Error | Mongoose: ', error);
 });
