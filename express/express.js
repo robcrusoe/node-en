@@ -40,7 +40,7 @@ app.use((req, res, next) => {
   User.findById('608e60c14d47900443518cc9').then(user => {
     console.log('Current User: ', user);
 
-    req.user = user;
+    req.user = new User(user.name, user.email, user.cart, user._id);
     next();
   }).catch(error => {
     console.log('Error while fetching User from DB: ', error);
