@@ -58,8 +58,6 @@ class User {
         $in: productIds
       }
     }).toArray().then(products => {
-      // console.log('Product(s) present in the Cart: ', products);
-
       return products.map(p => {
         return { ...p, quantity: this.cart.items.find(i => { return i.productId.toString() === p._id.toString() }).quantity };
       });
