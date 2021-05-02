@@ -29,22 +29,31 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-/* Wire up a new mock User */
-// app.use((req, res, next) => {
-//   User.findById('608e60c14d47900443518cc9').then(user => {
-//     req.user = new User(user.name, user.email, user.cart, user._id);
-//     next();
-//   }).catch(error => {
-//     console.log('Error while fetching User from DB: ', error);
-//   });
-// });
-
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
 
+/* Wire up a mock User */
+app.use((req, res, next) => {
+  User.findById('608ecce51dfbeb33d388e4a0').then(user => {
+    req.user = user;
+    next();
+  }).catch(error => {
+    console.log('Error fetching User from DB: ', error);
+  });
+});
+
 mongoose.connect('mongodb+srv://robcrusoe:j8KLWdQCCKH13wJz@cluster-fb-0.vkg7v.mongodb.net/shop?retryWrites=true&w=majority').then(result => {
+  // const user = new User({
+  //   name: 'Arka Sain',
+  //   email: 'arka.sain@aol.com',
+  //   cart: {
+  //     items: []
+  //   }
+  // });
+
+  // user.save();
   app.listen(3210);
 }).catch(error => {
   console.log('DB Connection Error | Mongoose: ', error);
