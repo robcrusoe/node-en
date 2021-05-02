@@ -87,13 +87,13 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.postDeleteProduct = (req, res, next) => {
-  // const productId = req.body.productId;
+  const productId = req.body.productId;
 
-  // Product.destroy({ where: { id: productId } })
-  //   .then((result) => {
-  //     res.redirect('/admin/products');
-  //   })
-  //   .catch((error) => {
-  //     console.log('Error while deleting Product: ', error);
-  //   });
+  Product.deleteById(productId)
+    .then(result => {
+      res.redirect('/admin/products');
+    })
+    .catch((error) => {
+      console.log('Error while deleting a Product: ', error);
+    });
 };
