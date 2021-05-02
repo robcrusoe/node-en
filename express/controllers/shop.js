@@ -49,7 +49,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   req.user.getCart().then(products => {
-    console.log('cart Product(s): ', products);
+    // console.log('cart Product(s): ', products);
     res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: products });
   }).catch((error) => {
     console.log('Error while fetching cart for current User from DB: ', error);
@@ -84,22 +84,15 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.postCartDeleteItem = (req, res, next) => {
-  // const prodId = req.body.prodId;
+  const prodId = req.body.prodId;
 
-  // req.user.getCart().then(cart => {
-  //   return cart.getProducts({ where: { id: prodId } });
-  // })
-  //   .then(products => {
-  //     const product = products[0];
-
-  //     return product.cartItem.destroy();
-  //   })
-  //   .then(result => {
-  //     res.redirect('/cart');
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   });
+  req.user.deleteItemFromCart(prodId)
+    .then(result => {
+      res.redirect('/cart');
+    })
+    .catch(error => {
+      console.log(error);
+    });
 };
 
 exports.postOrder = (req, res, next) => {

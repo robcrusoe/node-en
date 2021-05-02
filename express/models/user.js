@@ -51,20 +51,37 @@ class User {
       return item.productId;
     });
 
-    console.log('** productIds: ', productIds);
+    // console.log('** productIds: ', productIds);
 
     return db.collection('products').find({
       _id: {
         $in: productIds
       }
     }).toArray().then(products => {
-      console.log('Product(s) present in the Cart: ', products);
+      // console.log('Product(s) present in the Cart: ', products);
 
       return products.map(p => {
         return { ...p, quantity: this.cart.items.find(i => { return i.productId.toString() === p._id.toString() }).quantity };
       });
     }).catch(error => {
       console.log('DB Error: ', error);
+    });
+  }
+
+  deleteItemFromCart(productId) {
+    const updatedCartItems = this.cart.items.filter(item => {
+      return item.productId.toString() !== productId.toString()
+    });
+
+    const db = getDB();
+    return db.collection('users').updateOne({
+      _id: this._id
+    }, {
+      $set: {
+        cart: {
+          items: updatedCartItems
+        }
+      }
     });
   }
 
