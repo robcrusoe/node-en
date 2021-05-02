@@ -22,7 +22,7 @@ class Product {
   static findById(prodId) {
     const db = getDB();
     return db.collection('products').find({
-      _id: mongodb.ObjectId(prodId)
+      _id: new mongodb.ObjectId(prodId)
     }).next();
   }
 }
