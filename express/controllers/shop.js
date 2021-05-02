@@ -48,12 +48,16 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  req.user.getCart().then(products => {
-    // console.log('cart Product(s): ', products);
-    res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: products });
-  }).catch((error) => {
-    console.log('Error while fetching cart for current User from DB: ', error);
-  });
+  req.user.populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      const products = user.cart.items;
+      console.log('** products: ', products);
+
+      res.render('./shop/cart', { path: '/cart', docTitle: 'Cart | Node EN', cartProducts: products });
+    }).catch((error) => {
+      console.log('Error while fetching cart for current User from DB: ', error);
+    });
 };
 
 exports.postCart = (req, res, next) => {
