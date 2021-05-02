@@ -79,17 +79,17 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  // req.user.getProducts()
-  //   .then((products) => {
-  //     res.render('./admin/products', {
-  //       prods: products,
-  //       docTitle: 'Admin Products | Node EN',
-  //       path: '/admin/products',
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log('Error fetching Products from DB: ', error);
-  //   });
+  Product.fetchAll()
+    .then(products => {
+      res.render('./admin/products', {
+        prods: products,
+        docTitle: 'Admin Products | Node EN',
+        path: '/admin/products',
+      });
+    })
+    .catch((error) => {
+      console.log('Error fetching Products from DB: ', error);
+    });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
