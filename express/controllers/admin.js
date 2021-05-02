@@ -1,4 +1,7 @@
 const Product = require('./../models/product');
+const mongodb = require('mongodb');
+
+const ObjectId = mongodb.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
   res.render('./admin/edit-product', {
@@ -9,55 +12,49 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.getEditProduct = (req, res, next) => {
-  // const productId = req.params.productId;
-  // const editMode = Boolean(req.query.editMode);
+  const productId = req.params.productId;
+  const editMode = Boolean(req.query.editMode);
 
-  // if (!editMode) {
-  //   res.redirect('/');
-  // }
+  if (!editMode) {
+    res.redirect('/');
+  }
 
-  // req.user
-  //   .getProducts({ where: { id: productId } })
-  //   .then((products) => {
-  //     if (!products) {
-  //       res.redirect('/');
-  //     } else {
-  //       res.render('./admin/edit-product', {
-  //         docTitle: 'Edit Product | Node EN',
-  //         path: '/admin/edit-product',
-  //         editing: editMode,
-  //         product: products[0],
-  //       });
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log('Error while fetching Product from DB: ', error);
-  //   });
+  Product.findById(productId)
+    .then(product => {
+      if (!product) {
+        res.redirect('/');
+      } else {
+        res.render('./admin/edit-product', {
+          docTitle: 'Edit Product | Node EN',
+          path: '/admin/edit-product',
+          editing: editMode,
+          product: product,
+        });
+      }
+    })
+    .catch((error) => {
+      console.log('Error while fetching a Product from DB: ', error);
+    });
 };
 
 exports.postEditProduct = (req, res, next) => {
-  // const prodId = req.body.productId;
+  const prodId = req.body.productId;
 
-  // const updatedTitle = req.body.title;
-  // const updatedImageUrl = req.body.imageUrl;
-  // const updatedDesc = req.body.description;
-  // const updatedPrice = req.body.price;
+  const updatedTitle = req.body.title;
+  const updatedImageUrl = req.body.imageUrl;
+  const updatedDesc = req.body.description;
+  const updatedPrice = req.body.price;
 
-  // Product.findByPk(prodId)
-  //   .then((product) => {
-  //     product.title = updatedTitle;
-  //     product.price = updatedPrice;
-  //     product.imageUrl = updatedImageUrl;
-  //     product.description = updatedDesc;
-  //     return product.save();
-  //   })
-  //   .then((result) => {
-  //     console.log('Product has been updated successfully!');
-  //     res.redirect('/admin/products');
-  //   })
-  //   .catch((error) => {
-  //     console.log('Error fetching Product from DB: ', error);
-  //   });
+  const product = new Product(updatedTitle, updatedPrice, updatedDesc, updatedImageUrl, new ObjectId(prodId));
+
+  product.save()
+    .then((result) => {
+      console.log('Product has been updated successfully!');
+      res.redirect('/admin/products');
+    })
+    .catch((error) => {
+      console.log('Error fetching Product from DB: ', error);
+    });
 };
 
 exports.postAddProduct = (req, res, next) => {
