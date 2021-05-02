@@ -8,6 +8,30 @@ exports.getAddProduct = (req, res, next) => {
   });
 };
 
+exports.postAddProduct = (req, res, next) => {
+  const title = req.body.title;
+  const imageUrl = req.body.imageUrl;
+  const description = req.body.description;
+  const price = req.body.price;
+
+  /* Creates a new Product (managed by Mongoose) */
+  const product = new Product({
+    title: title,
+    price: price,
+    description: description,
+    imageUrl: imageUrl
+  });
+
+  product.save()
+    .then(result => {
+      console.log('New Product has been created!', result);
+      res.redirect('/products');
+    })
+    .catch(error => {
+      console.log('Error while saving a Product to the DB: ', error);
+    });
+};
+
 exports.getEditProduct = (req, res, next) => {
   const productId = req.params.productId;
   const editMode = Boolean(req.query.editMode);
@@ -51,24 +75,6 @@ exports.postEditProduct = (req, res, next) => {
     })
     .catch((error) => {
       console.log('Error fetching Product from DB: ', error);
-    });
-};
-
-exports.postAddProduct = (req, res, next) => {
-  const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
-  const description = req.body.description;
-  const price = req.body.price;
-
-  const product = new Product(title, price, description, imageUrl, null, req.user._id);
-
-  product.save()
-    .then((result) => {
-      console.log('New Product has been created!', result);
-      res.redirect('/products');
-    })
-    .catch((error) => {
-      console.log('Error while saving a Product to the DB: ', error);
     });
 };
 
