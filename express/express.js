@@ -16,6 +16,9 @@ const errorController = require('./controllers/error');
 /* Database Related Imports */
 const mongoConnect = require('./utils/database').mongoConnect;
 
+/* Model Imports */
+const User = require('./models/user');
+
 const app = express();
 
 /* Setting up global configuration values ... */
@@ -32,6 +35,17 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
+
+/* Wire up a new mock User */
+app.use((req, res, next) => {
+  User.findById('608e60c14d47900443518cc9').then(user => {
+    req.user = user;
+  }).catch(error => {
+    console.log('Error while fetching User from DB: ', error);
+  });
+
+  next();
+});
 
 mongoConnect(() => {
   app.listen(3210);
