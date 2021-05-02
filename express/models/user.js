@@ -85,6 +85,25 @@ class User {
     });
   }
 
+  addOrder() {
+    const db = getDB();
+    return db.collection('orders').insertOne(this.cart).then(result => {
+      this.cart = { items: [] };
+
+      return db.collection('users').updateOne({
+        _id: this._id
+      }, {
+        $set: {
+          cart: {
+            items: []
+          }
+        }
+      });
+    }).catch(error => {
+      console.log('MongoDB Error: ', error);
+    })
+  }
+
   static findById(userId) {
     const db = getDB();
 
