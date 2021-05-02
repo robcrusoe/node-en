@@ -1,5 +1,7 @@
 const getDB = require('./../utils/database').getDB;
+
 const mongodb = require('mongodb');
+const ObjectId = mongodb.ObjectId;
 
 class Product {
   constructor(title, price, description, imageUrl, _id) {
@@ -7,7 +9,7 @@ class Product {
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
-    this._id = _id;
+    this._id = new ObjectId(_id);
   }
 
   save() {
@@ -16,7 +18,7 @@ class Product {
     if (this._id) {
       // Updates the Product
       return db.collection('products').updateOne({
-        _id: new mongodb.ObjectId(this._id)
+        _id: this._id
       }, {
         $set: this
       });
@@ -35,7 +37,7 @@ class Product {
   static findById(prodId) {
     const db = getDB();
     return db.collection('products').find({
-      _id: new mongodb.ObjectId(prodId)
+      _id: new ObjectId(prodId)
     }).next();
   }
 }
